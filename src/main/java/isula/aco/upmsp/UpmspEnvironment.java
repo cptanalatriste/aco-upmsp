@@ -5,8 +5,8 @@ import isula.aco.exception.InvalidInputException;
 
 public class UpmspEnvironment extends Environment {
 
-    public UpmspEnvironment(double[][] problemGraph) throws InvalidInputException {
-        super(problemGraph);
+    public UpmspEnvironment(double[][] problemRepresentation) throws InvalidInputException {
+        super(problemRepresentation);
     }
 
     protected double[][] createPheromoneMatrix() {

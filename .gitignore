@@ -1,2 +1,19 @@
 
 *.class
+*.iml
+.idea/compiler.xml
+.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml
+.idea/libraries/Maven__commons_codec_commons_codec_1_10.xml
+.idea/libraries/Maven__isula_isula_0_0_1_SNAPSHOT.xml
+.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml
+.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml
+.idea/libraries/Maven__org_apache_poi_poi_3_17.xml
+.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_17.xml
+.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_17.xml
+.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml
+.idea/libraries/Maven__stax_stax_api_1_0_1.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
