@@ -3,6 +3,7 @@ package upmsp.isula.sample;
 import isula.aco.AcoProblemSolver;
 import isula.aco.Ant;
 import isula.aco.AntColony;
+import isula.aco.algorithms.antsystem.RandomNodeSelection;
 import isula.aco.upmsp.AntForUpmsp;
 import isula.aco.upmsp.UpmspEnvironment;
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,7 +38,7 @@ public class AcoUpmspWithIsula {
             acoProblemSolver.initialize(environment, antColony, configurationProvider);
 
             acoProblemSolver.addDaemonActions();
-            acoProblemSolver.getAntColony().addAntPolicies();
+            acoProblemSolver.getAntColony().addAntPolicies(new RandomNodeSelection<>());
 
             acoProblemSolver.solveProblem();
 
@@ -51,7 +52,7 @@ public class AcoUpmspWithIsula {
         return new AntColony<Integer, UpmspEnvironment>(configurationProvider.getNumberOfAnts()) {
             @Override
             protected Ant<Integer, UpmspEnvironment> createAnt(UpmspEnvironment environment) {
-                AntForUpmsp antForUpmsp = new AntForUpmsp();
+                AntForUpmsp antForUpmsp = new AntForUpmsp(environment);
                 return antForUpmsp;
             }
         };

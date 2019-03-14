@@ -12,4 +12,8 @@ public class UpmspEnvironment extends Environment {
     protected double[][] createPheromoneMatrix() {
         return new double[0][];
     }
+
+    public int getNumberOfJobs() {
+        return this.getProblemRepresentation()[0].length;
+    }
 }
