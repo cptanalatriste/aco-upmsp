@@ -1,5 +1,10 @@
 package upmsp.isula.sample;
 
+import isula.aco.AcoProblemSolver;
+import isula.aco.Ant;
+import isula.aco.AntColony;
+import isula.aco.upmsp.AntForUpmsp;
+import isula.aco.upmsp.UpmspEnvironment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -21,11 +26,36 @@ public class AcoUpmspWithIsula {
         logger.info("ANT COLONY OPTIMIZATION FOR THE UNRELATED PARALLEL MACHINE SCHEDULING PROBLEM");
 
         try {
-            double[][] problemRepresentation = getProblemFromFile(ProblemConfiguration.INPUT_FILE, ProblemConfiguration.SHEET_INDEX);
+            double[][] problemRepresentation = getProblemFromFile(ProblemConfiguration.INPUT_FILE,
+                    ProblemConfiguration.SHEET_INDEX);
+
+            ProblemConfiguration configurationProvider = new ProblemConfiguration();
+            AntColony<Integer, UpmspEnvironment> antColony = getAntColony(configurationProvider);
+            UpmspEnvironment environment = new UpmspEnvironment(problemRepresentation);
+
+            AcoProblemSolver<Integer, UpmspEnvironment> acoProblemSolver = new AcoProblemSolver<>();
+            acoProblemSolver.initialize(environment, antColony, configurationProvider);
+
+            acoProblemSolver.addDaemonActions();
+            acoProblemSolver.getAntColony().addAntPolicies();
+
+            acoProblemSolver.solveProblem();
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static AntColony<Integer, UpmspEnvironment> getAntColony(ProblemConfiguration configurationProvider) {
+        return new AntColony<Integer, UpmspEnvironment>(configurationProvider.getNumberOfAnts()) {
+            @Override
+            protected Ant<Integer, UpmspEnvironment> createAnt(UpmspEnvironment environment) {
+                AntForUpmsp antForUpmsp = new AntForUpmsp();
+                return antForUpmsp;
+            }
+        };
+
     }
 
     private static double[][] getProblemFromFile(String dataFile, int sheetIndex) throws IOException, InvalidFormatException {
@@ -43,8 +73,6 @@ public class AcoUpmspWithIsula {
                 if (cell.getColumnIndex() > 0) {
                     Double cellValue = Double.parseDouble(dataFormatter.formatCellValue(cell));
                     rowInformation.add(cellValue);
-
-                    logger.info("cellValue: " + cellValue);
                 }
 
             });
