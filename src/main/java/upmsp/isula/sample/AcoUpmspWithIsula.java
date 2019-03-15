@@ -4,6 +4,7 @@ import isula.aco.AcoProblemSolver;
 import isula.aco.Ant;
 import isula.aco.AntColony;
 import isula.aco.algorithms.antsystem.RandomNodeSelection;
+import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
 import isula.aco.upmsp.AntForUpmsp;
 import isula.aco.upmsp.UpmspEnvironment;
 import org.apache.commons.lang3.ArrayUtils;
@@ -36,8 +37,7 @@ public class AcoUpmspWithIsula {
 
             AcoProblemSolver<Integer, UpmspEnvironment> acoProblemSolver = new AcoProblemSolver<>();
             acoProblemSolver.initialize(environment, antColony, configurationProvider);
-
-            acoProblemSolver.addDaemonActions();
+            acoProblemSolver.addDaemonActions(new StartPheromoneMatrix<>());
             acoProblemSolver.getAntColony().addAntPolicies(new RandomNodeSelection<>());
 
             acoProblemSolver.solveProblem();

@@ -3,7 +3,10 @@ package isula.aco.upmsp;
 import isula.aco.Environment;
 import isula.aco.exception.InvalidInputException;
 
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class UpmspEnvironment extends Environment {
 
@@ -11,12 +14,21 @@ public class UpmspEnvironment extends Environment {
     private static Logger logger = Logger.getLogger(UpmspEnvironment.class
             .getName());
 
+    private int numberOfJobs;
+    private int numberOfMachines;
+    private List<Integer> machineCatalogue;
+
+
     public UpmspEnvironment(double[][] problemRepresentation) throws InvalidInputException {
         super(problemRepresentation);
+
+        this.numberOfJobs = getNumberOfJobs();
+        this.numberOfMachines = getNumberOfMachines();
+        this.machineCatalogue = IntStream.range(1, this.numberOfMachines + 1).boxed().collect(Collectors.toList());
     }
 
     protected double[][] createPheromoneMatrix() {
-        return new double[0][];
+        return new double[getNumberOfMachines()][getNumberOfJobs()];
     }
 
     public int getNumberOfJobs() {
@@ -27,8 +39,11 @@ public class UpmspEnvironment extends Environment {
         return this.getProblemRepresentation().length - 3;
     }
 
-    public double getProcessingTime(Integer machineId, Integer jobIndex) {
+    public List<Integer> getMachineCatalogue() {
+        return machineCatalogue;
+    }
 
+    public double getProcessingTime(Integer machineId, Integer jobIndex) {
         double[] machineRowInfo = getProblemRepresentation()[machineId];
         double processingTime = machineRowInfo[jobIndex];
         return processingTime;

@@ -20,15 +20,16 @@ public class ProblemConfiguration implements ConfigurationProvider {
     }
 
     @Override
+    public double getInitialPheromoneValue() {
+        //The Tau(I, j, k) parameter from the paper.
+        return 10;
+    }
+
+    @Override
     public double getEvaporationRatio() {
         return 0;
     }
 
-
-    @Override
-    public double getInitialPheromoneValue() {
-        return 0;
-    }
 
     @Override
     public double getHeuristicImportance() {
