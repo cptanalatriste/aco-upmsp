@@ -62,6 +62,6 @@ public class AntForUpmsp extends Ant<Integer, UpmspEnvironment> {
 
 
     public void setPheromoneTrailValue(Integer integer, Integer integer2, UpmspEnvironment upmspEnvironment, Double aDouble) {
-
+        //Keep in mind how the pheromone train gets updated
     }
 }

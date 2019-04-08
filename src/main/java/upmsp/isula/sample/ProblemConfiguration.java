@@ -27,17 +27,20 @@ public class ProblemConfiguration implements ConfigurationProvider {
 
     @Override
     public double getEvaporationRatio() {
-        return 0;
+        //The rho parameter from the paper.
+        return 1 - 0.01;
     }
 
 
     @Override
     public double getHeuristicImportance() {
-        return 0;
+        //This parameter is not mentioned in the paper.Current value taken from the Ant System paper
+        return 5;
     }
 
     @Override
     public double getPheromoneImportance() {
-        return 0;
+        //This parameter is not mentioned in the paper.Current value taken from the Ant System paper
+        return 1;
     }
 }
