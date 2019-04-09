@@ -1,8 +1,7 @@
 package upmsp.isula.sample;
 
-import isula.aco.AcoProblemSolver;
-import isula.aco.Ant;
-import isula.aco.AntColony;
+import isula.aco.*;
+import isula.aco.algorithms.antsystem.OfflinePheromoneUpdate;
 import isula.aco.algorithms.antsystem.PerformEvaporation;
 import isula.aco.algorithms.antsystem.RandomNodeSelection;
 import isula.aco.algorithms.antsystem.StartPheromoneMatrix;
@@ -29,18 +28,20 @@ public class AcoUpmspWithIsula {
         logger.info("ANT COLONY OPTIMIZATION FOR THE UNRELATED PARALLEL MACHINE SCHEDULING PROBLEM");
 
         try {
-            double[][] problemRepresentation = getProblemFromFile(ProblemConfiguration.INPUT_FILE,
-                    ProblemConfiguration.SHEET_INDEX);
-
-            ProblemConfiguration configurationProvider = new ProblemConfiguration();
-            AntColony<Integer, UpmspEnvironment> antColony = getAntColony(configurationProvider);
+            double[][] problemRepresentation = getProblemFromFile(UpmspProblemConfiguration.INPUT_FILE,
+                    UpmspProblemConfiguration.SHEET_INDEX);
             UpmspEnvironment environment = new UpmspEnvironment(problemRepresentation);
+
+            UpmspProblemConfiguration configurationProvider = new UpmspProblemConfiguration(environment);
+            AntColony<Integer, UpmspEnvironment> antColony = getAntColony(configurationProvider);
 
             AcoProblemSolver<Integer, UpmspEnvironment> acoProblemSolver = new AcoProblemSolver<>();
             acoProblemSolver.initialize(environment, antColony, configurationProvider);
             acoProblemSolver.addDaemonActions(new StartPheromoneMatrix<>(), new PerformEvaporation<>());
-            acoProblemSolver.getAntColony().addAntPolicies(new RandomNodeSelection<>());
 
+            acoProblemSolver.addDaemonActions(getPheromoneUpdatePolicy());
+
+            acoProblemSolver.getAntColony().addAntPolicies(new RandomNodeSelection<>());
             acoProblemSolver.solveProblem();
 
 
@@ -49,7 +50,21 @@ public class AcoUpmspWithIsula {
         }
     }
 
-    private static AntColony<Integer, UpmspEnvironment> getAntColony(ProblemConfiguration configurationProvider) {
+    private static DaemonAction<Integer, UpmspEnvironment> getPheromoneUpdatePolicy() {
+        return new OfflinePheromoneUpdate<Integer, UpmspEnvironment>() {
+            @Override
+            protected double getPheromoneDeposit(Ant<Integer, UpmspEnvironment> ant, Integer positionInSolution,
+                                                 Integer solutionComponent, UpmspEnvironment environment,
+                                                 ConfigurationProvider configurationProvider) {
+                int constantQ = 1;
+                return constantQ / ant.getSolutionCost(environment);
+            }
+
+        };
+    }
+
+
+    private static AntColony<Integer, UpmspEnvironment> getAntColony(UpmspProblemConfiguration configurationProvider) {
         return new AntColony<Integer, UpmspEnvironment>(configurationProvider.getNumberOfAnts()) {
             @Override
             protected Ant<Integer, UpmspEnvironment> createAnt(UpmspEnvironment environment) {

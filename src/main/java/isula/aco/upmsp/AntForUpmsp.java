@@ -26,26 +26,34 @@ public class AntForUpmsp extends Ant<Integer, UpmspEnvironment> {
         return upmspEnvironment.getMachineCatalogue();
     }
 
-    public Double getHeuristicValue(Integer solutionComponent, Integer positionInSolution,
-                                    UpmspEnvironment environmentnvironment) {
+    public Double getHeuristicValue(Integer machineId, Integer jobIndex,
+                                    UpmspEnvironment environment) {
 
-        double processingTime = environmentnvironment.getProcessingTime(solutionComponent, positionInSolution);
-        return 1 / processingTime;
+        double weightedProcessingTime = environment.getJobWeight(jobIndex) / environment.getProcessingTime(machineId, jobIndex);
+        return weightedProcessingTime;
     }
 
 
-    public Double getPheromoneTrailValue(Integer solutionComponent, Integer positionInSolution,
+    public Double getPheromoneTrailValue(Integer machineId, Integer jobIndex,
                                          UpmspEnvironment upmspEnvironment) {
 
-        int machineIndex = solutionComponent - 1;
-        int jobIndex = positionInSolution;
+        int machineIndex = machineId - 1;
         double[][] pheromoneMatrix = upmspEnvironment.getPheromoneMatrix();
 
         return pheromoneMatrix[machineIndex][jobIndex];
     }
 
+
+    public void setPheromoneTrailValue(Integer machineId, Integer jobIndex, UpmspEnvironment upmspEnvironment,
+                                       Double value) {
+        int machineIndex = machineId - 1;
+        double[][] pheromoneMatrix = upmspEnvironment.getPheromoneMatrix();
+
+        pheromoneMatrix[machineIndex][jobIndex] = value;
+    }
+
     /**
-     * A machine, our solution component, can have multiple jobs schedulled. Even all of them.
+     * A machine, our solution component, can have multiple jobs scheduled. Even all of them.
      * Hence, this function always returns false.
      *
      * @param component
@@ -88,7 +96,4 @@ public class AntForUpmsp extends Ant<Integer, UpmspEnvironment> {
     }
 
 
-    public void setPheromoneTrailValue(Integer integer, Integer integer2, UpmspEnvironment upmspEnvironment, Double aDouble) {
-        //Keep in mind how the pheromone train gets updated
-    }
 }
