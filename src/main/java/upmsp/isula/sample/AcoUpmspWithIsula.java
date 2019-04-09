@@ -75,7 +75,7 @@ public class AcoUpmspWithIsula {
 
     }
 
-    private static double[][] getProblemFromFile(String dataFile, int sheetIndex) throws IOException, InvalidFormatException {
+    public static double[][] getProblemFromFile(String dataFile, int sheetIndex) throws IOException, InvalidFormatException {
 
         Workbook workbook = WorkbookFactory.create(new File(dataFile));
         Sheet sheet = workbook.getSheetAt(sheetIndex);

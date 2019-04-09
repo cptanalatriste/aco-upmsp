@@ -13,7 +13,6 @@ public class UpmspEnvironment extends Environment {
 
     private static Logger logger = Logger.getLogger(UpmspEnvironment.class
             .getName());
-    private static Integer WEIGHT_ROW = 6;
 
     private int numberOfJobs;
     private int numberOfMachines;
@@ -51,7 +50,8 @@ public class UpmspEnvironment extends Environment {
     }
 
     public double getJobWeight(Integer jobIndex) {
-        double[] weightInfoRow = this.getProblemRepresentation()[WEIGHT_ROW];
+        int weightRow = this.getProblemRepresentation().length - 1;
+        double[] weightInfoRow = this.getProblemRepresentation()[weightRow];
         return weightInfoRow[jobIndex];
     }
 }
