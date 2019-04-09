@@ -2,9 +2,7 @@ package isula.aco.upmsp;
 
 import isula.aco.Ant;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -74,25 +72,45 @@ public class AntForUpmsp extends Ant<Integer, UpmspEnvironment> {
 
         IntStream.range(0, upmspEnvironment.getNumberOfMachines() + 1).forEachOrdered(machineId -> {
 
-            List<Integer> jobsPerMachine = Arrays.asList(this.getSolution());
+            List<Integer> jobsPerMachine = this.getSortedJobs(machineId, upmspEnvironment);
             ListIterator<Integer> iterator = jobsPerMachine.listIterator();
 
             double currentTime = 0;
 
             while (iterator.hasNext()) {
-                int jobIndex = iterator.nextIndex();
-                int machinePerJob = iterator.next();
+                int jobIndex = iterator.next();
 
-                if (machinePerJob == machineId) {
-                    double jobCompletitionTime = currentTime + upmspEnvironment.getProcessingTime(machineId, jobIndex);
-                    weightedCompletitionTimes[jobIndex] = jobCompletitionTime * upmspEnvironment.getJobWeight(jobIndex);
+                double jobCompletitionTime = currentTime + upmspEnvironment.getProcessingTime(machineId, jobIndex);
+                weightedCompletitionTimes[jobIndex] = jobCompletitionTime * upmspEnvironment.getJobWeight(jobIndex);
 
-                    currentTime = jobCompletitionTime;
-                }
+                currentTime = jobCompletitionTime;
+
             }
         });
 
         return DoubleStream.of(weightedCompletitionTimes).sum();
+    }
+
+    private List<Integer> getSortedJobs(Integer machineId, UpmspEnvironment upmspEnvironment) {
+
+        List<Integer> assignedJobs = new ArrayList<>();
+
+        for (int jobIndex = 0; jobIndex < this.getSolution().length; jobIndex++) {
+            if (this.getSolution()[jobIndex] == machineId) {
+                assignedJobs.add(jobIndex);
+            }
+        }
+
+        assignedJobs.sort((oneJob, anotherJob) -> {
+            Double oneJobHeuristic = upmspEnvironment.getJobWeight(oneJob) / upmspEnvironment.getProcessingTime(machineId,
+                    oneJob);
+            Double anotherJobHeuristic = upmspEnvironment.getJobWeight(anotherJob) / upmspEnvironment.getProcessingTime(machineId,
+                    anotherJob);
+
+            return anotherJobHeuristic.compareTo(oneJobHeuristic);
+        });
+
+        return assignedJobs;
     }
 
 

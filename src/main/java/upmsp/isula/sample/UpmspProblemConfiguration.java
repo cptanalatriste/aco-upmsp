@@ -5,12 +5,12 @@ import isula.aco.upmsp.UpmspEnvironment;
 
 public class UpmspProblemConfiguration implements ConfigurationProvider {
 
-    //public static final String INPUT_FILE = "target/classes/Small_Problem_Data4m_20n.xls";
-    //public static final int SHEET_INDEX = 7;
+    public static final String INPUT_FILE = "target/classes/Large_Problem_Data10m_100n.xls";
+    public static final int SHEET_INDEX = 1;
 
 
-    public static final String INPUT_FILE = "target/classes/very_small_example.xlsx";
-    public static final int SHEET_INDEX = 0;
+    //public static final String INPUT_FILE = "target/classes/very_small_example.xlsx";
+    //public static final int SHEET_INDEX = 0;
 
 
     private int numberOfAnts;

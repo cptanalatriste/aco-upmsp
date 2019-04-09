@@ -65,19 +65,8 @@ public class AntForUpmspTest {
         testAnt.visitNode(SENIOR_MACHINE_ID);
         assertTrue(testAnt.isSolutionReady(testEnvironment));
 
-        double onlySeniorTime = 58;
+        double onlySeniorTime = 43;
         assertEquals(testAnt.getSolutionCost(testEnvironment), onlySeniorTime, DELTA);
-
-        testAnt.clear();
-
-        testAnt.visitNode(SENIOR_MACHINE_ID);
-        testAnt.visitNode(JUNIOR_MACHINE_ID);
-        testAnt.visitNode(SENIOR_MACHINE_ID);
-        testAnt.visitNode(SENIOR_MACHINE_ID);
-
-        double withHelpTime = 47.0;
-        assertEquals(testAnt.getSolutionCost(testEnvironment), withHelpTime, DELTA);
-
 
     }
 
