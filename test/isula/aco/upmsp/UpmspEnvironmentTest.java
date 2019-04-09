@@ -1,5 +1,6 @@
 package isula.aco.upmsp;
 
+import aco.upmsp.test.TestingUtils;
 import isula.aco.exception.InvalidInputException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.BeforeClass;
@@ -15,21 +16,13 @@ import static org.junit.Assert.*;
 
 public class UpmspEnvironmentTest {
 
-    private static final String TEST_FILE = "target/classes/very_small_example.xlsx";
-    public static final int SHEET_INDEX = 0;
 
     private static UpmspEnvironment testEnvironment = null;
-    private static int numberOfMachines = 2;
-    private static int numberOfJobs = 4;
-
-    private static int highWeightJobIndex = 1;
-    private static int lowWeightJobIndex = 2;
-    private static double delta = 0.01;
-
 
     @BeforeClass
     public static void setUp() throws IOException, InvalidFormatException, InvalidInputException {
-        double[][] problemRepresentation = AcoUpmspWithIsula.getProblemFromFile(TEST_FILE, SHEET_INDEX);
+        double[][] problemRepresentation = AcoUpmspWithIsula.getProblemFromFile(TestingUtils.TEST_FILE,
+                TestingUtils.SHEET_INDEX);
         testEnvironment = new UpmspEnvironment(problemRepresentation);
     }
 
@@ -39,18 +32,18 @@ public class UpmspEnvironmentTest {
 
         double[][] pheromoneMatrix = testEnvironment.createPheromoneMatrix();
 
-        assertEquals(pheromoneMatrix.length, numberOfMachines);
-        assertEquals(pheromoneMatrix[0].length, numberOfJobs);
+        assertEquals(pheromoneMatrix.length, TestingUtils.NUMBER_OF_MACHINES);
+        assertEquals(pheromoneMatrix[0].length, TestingUtils.NUMBER_OF_JOBS);
     }
 
     @Test
     public void getNumberOfJobs() {
-        assertEquals(testEnvironment.getNumberOfJobs(), numberOfJobs);
+        assertEquals(testEnvironment.getNumberOfJobs(), TestingUtils.NUMBER_OF_JOBS);
     }
 
     @Test
     public void getNumberOfMachines() {
-        assertEquals(testEnvironment.getNumberOfMachines(), numberOfMachines);
+        assertEquals(testEnvironment.getNumberOfMachines(), TestingUtils.NUMBER_OF_MACHINES);
     }
 
     @Test
@@ -61,22 +54,21 @@ public class UpmspEnvironmentTest {
 
     @Test
     public void getProcessingTime() {
-        double seniorEasyAndHigh = 2.0;
 
-        assertEquals(testEnvironment.getProcessingTime(1, highWeightJobIndex), seniorEasyAndHigh, delta);
-
-        double juniorHardAndLow = 18.0;
-        assertEquals(testEnvironment.getProcessingTime(2, lowWeightJobIndex), juniorHardAndLow, delta);
+        assertEquals(testEnvironment.getProcessingTime(TestingUtils.SENIOR_MACHINE_ID, TestingUtils.HIGH_JOB_INDEX),
+                TestingUtils.TIME_SENIOR_EASY_HIGH, TestingUtils.DELTA);
+        assertEquals(testEnvironment.getProcessingTime(TestingUtils.JUNIOR_MACHINE_ID, TestingUtils.LOW_JOB_INDEX),
+                TestingUtils.TIME_JUNIOR_HARD_LOW, TestingUtils.DELTA);
     }
 
     @Test
     public void getJobWeight() {
 
-        int highWeightValue = 3;
-        int lowWeightValue = 1;
 
-        assertEquals(testEnvironment.getJobWeight(highWeightJobIndex), highWeightValue, delta);
-        assertEquals(testEnvironment.getJobWeight(lowWeightJobIndex), lowWeightValue, delta);
+        assertEquals(testEnvironment.getJobWeight(TestingUtils.HIGH_JOB_INDEX), TestingUtils.HIGH_WEIGHT_VALUE,
+                TestingUtils.DELTA);
+        assertEquals(testEnvironment.getJobWeight(TestingUtils.LOW_JOB_INDEX), TestingUtils.LOW_WEIGHT_VALUE,
+                TestingUtils.DELTA);
 
     }
 }
