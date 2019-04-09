@@ -1,6 +1,5 @@
 package isula.aco.upmsp;
 
-import aco.upmsp.test.TestingUtils;
 import isula.aco.exception.InvalidInputException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.BeforeClass;
@@ -72,11 +71,11 @@ public class AntForUpmspTest {
         testAnt.clear();
 
         testAnt.visitNode(SENIOR_MACHINE_ID);
-        testAnt.visitNode(SENIOR_MACHINE_ID);
-        testAnt.visitNode(SENIOR_MACHINE_ID);
         testAnt.visitNode(JUNIOR_MACHINE_ID);
+        testAnt.visitNode(SENIOR_MACHINE_ID);
+        testAnt.visitNode(SENIOR_MACHINE_ID);
 
-        double withHelpTime = 67.0;
+        double withHelpTime = 47.0;
         assertEquals(testAnt.getSolutionCost(testEnvironment), withHelpTime, DELTA);
 
 
