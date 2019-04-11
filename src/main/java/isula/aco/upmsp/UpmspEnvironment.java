@@ -14,15 +14,12 @@ public class UpmspEnvironment extends Environment {
     private static Logger logger = Logger.getLogger(UpmspEnvironment.class
             .getName());
 
-    private int numberOfJobs;
     private int numberOfMachines;
     private List<Integer> machineCatalogue;
 
 
     public UpmspEnvironment(double[][] problemRepresentation) throws InvalidInputException {
         super(problemRepresentation);
-
-        this.numberOfJobs = getNumberOfJobs();
         this.numberOfMachines = getNumberOfMachines();
         this.machineCatalogue = IntStream.range(1, this.numberOfMachines + 1).boxed().collect(Collectors.toList());
     }
